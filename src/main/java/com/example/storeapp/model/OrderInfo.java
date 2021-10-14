@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class OrderInfo {
@@ -119,5 +120,18 @@ public class OrderInfo {
                 ", paymentStatus='" + paymentStatus + '\'' +
                 ", accountNum='" + accountNum + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderInfo orderInfo = (OrderInfo) o;
+        return orderId == orderInfo.orderId && itemId == orderInfo.itemId && qty == orderInfo.qty && Double.compare(orderInfo.price, price) == 0 && Objects.equals(name, orderInfo.name) && Objects.equals(orderStatus, orderInfo.orderStatus) && Objects.equals(paymentStatus, orderInfo.paymentStatus) && Objects.equals(accountNum, orderInfo.accountNum);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId, name, itemId, qty, price, orderStatus, paymentStatus, accountNum);
     }
 }

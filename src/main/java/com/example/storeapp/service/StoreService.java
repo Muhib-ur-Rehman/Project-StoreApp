@@ -4,15 +4,20 @@ import com.example.storeapp.model.OrderInfo;
 import com.example.storeapp.repository.StoreRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Component
+@Service
 public class StoreService {
     @Autowired
     StoreRepo storeRepo;
 
-    public Optional<OrderInfo> getStatus(int orderId){
-        return this.storeRepo.findById(orderId);
+    public StoreService(StoreRepo storeRepo){
+        this.storeRepo=storeRepo;
+    }
+
+    public OrderInfo getStatus(int orderId){
+        return this.storeRepo.findById(orderId).get();
     }
 }

@@ -5,6 +5,7 @@ import com.example.storeapp.model.OrderInfo;
 import com.example.storeapp.service.StoreService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -14,11 +15,14 @@ import java.util.UUID;
 @RestController
 public class OrderController {
 
-    @Autowired
-    private RabbitTemplate template;
+    private final RabbitTemplate template;
+    private final StoreService storeService;
 
     @Autowired
-    StoreService storeService;
+    public OrderController(StoreService storeService, RabbitTemplate template){
+        this.storeService = storeService;
+        this.template = template;
+    }
 
     @PostMapping("/order")
     public String bookOrder(@RequestBody OrderInfo order){
@@ -32,7 +36,7 @@ public class OrderController {
 
     @GetMapping("/status/{id}")
     public OrderInfo getStatusOfOrder(@PathVariable("id") int orderId){
-        OrderInfo orderInfo = this.storeService.getStatus(orderId).get();
+        OrderInfo orderInfo = this.storeService.getStatus(orderId);
         return orderInfo;
     }
 }

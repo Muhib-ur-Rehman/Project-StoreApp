@@ -1,5 +1,4 @@
 CREATE TABLE inventory (
-  item_id INT NOT NULL AUTO_INCREMENT,
+  item_id INT NOT NULL primary key,
   name VARCHAR(45) NOT NULL,
-  qty INT NOT NULL,
-  PRIMARY KEY (item_id));
+  qty INT NOT NULL);

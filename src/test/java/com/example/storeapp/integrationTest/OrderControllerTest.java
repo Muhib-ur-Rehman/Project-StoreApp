@@ -2,8 +2,11 @@ package com.example.storeapp.integrationTest;
 
 import com.example.storeapp.config.OrderConfig;
 import com.example.storeapp.model.OrderInfo;
+import com.example.storeapp.repository.StoreRepo;
 import com.example.storeapp.service.StoreService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -34,6 +37,9 @@ public class OrderControllerTest {
     RabbitTemplate template;
     @Mock
     StoreService storeService;
+    @Autowired
+    StoreRepo storeRepo;
+
 
     @Test
     public void orderPost() throws Exception {
@@ -56,7 +62,7 @@ public class OrderControllerTest {
         order.setOrderStatus("PLACED");
         order.setQty(1);
         order.setName("Chicken Burger");
-        Mockito.when(this.storeService.getStatus(1)).thenReturn(order);
+        Mockito.when(this.storeService.getStatus(15)).thenReturn(order);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/status/15")
                         .contentType("application/json"))
@@ -66,11 +72,22 @@ public class OrderControllerTest {
                         "    \"orderNum\": \"dc3aabd8-bc76-4b56-97c9-8a5d68ba9a2c\",\n" +
                         "    \"name\": \"chicken Burger\",\n" +
                         "    \"itemId\": 1,\n" +
-                        "    \"qty\": 6,\n" +
-                        "    \"price\": 400.0,\n" +
+                        "    \"qty\": 1,\n" +
+                        "    \"price\": 200.0,\n" +
                         "    \"orderStatus\": \"CANCELLED\",\n" +
                         "    \"paymentStatus\": \"ACCEPTED\",\n" +
                         "    \"accountNum\": \"12345\"\n" +
                         "}"));
+    }
+
+
+    @Test
+    public void getStatusIntegrationTest(){
+        StoreService storeService = new StoreService(storeRepo);
+        OrderInfo order=storeService.getStatus(15);
+        Assert.assertEquals(15,order.getOrderId());
+        Assert.assertEquals("chicken Burger",order.getName());
+        Assert.assertEquals(1,order.getQty());
+        Assert.assertEquals("ACCEPTED",order.getPaymentStatus());
     }
 }

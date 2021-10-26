@@ -1,2 +1,2 @@
 ALTER TABLE order_info
-ADD COLUMN order_num VARCHAR(200) NOT NULL AFTER order_id;
+ADD COLUMN order_num VARCHAR(200) NOT NULL;

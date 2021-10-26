@@ -1,8 +1,7 @@
 CREATE TABLE order_info (
-  order_id INT NOT NULL AUTO_INCREMENT,
+  order_id INT NOT NULL primary key,
   name VARCHAR(45) NOT NULL,
   qty INT NOT NULL,
-  price DOUBLE NOT NULL,
+  price double precision NOT NULL,
   order_status VARCHAR(45) NOT NULL,
-  payment_status VARCHAR(45) NOT NULL,
-  PRIMARY KEY (order_id));
+  payment_status VARCHAR(45) NOT NULL);
